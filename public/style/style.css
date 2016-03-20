@@ -1,0 +1,38 @@
+body {
+    background-color: #4d4d4d;
+}
+
+#banner {
+	background-color: #000;
+	 position: absolute; 
+     top: 0; 
+     left: 0; 
+     height: 70px;
+     width: 100%;
+}
+
+#banner #banner-content {
+	width: 300px;
+    margin: auto;
+   	padding-top: 7px;
+}
+
+#game {
+	width: 1002px;
+	height: 802px;
+	margin: auto;
+	margin-top: 80px;
+	border: 1px solid #000000;
+	padding: 8px;
+	background-color: #994c00;
+}
+
+#view {
+	width: 802px;
+	height: 502px;
+	margin: auto;
+	margin-top: 100px;
+	border: 1px solid #000000;
+	padding: 8px;
+	background-color: #66ccff;
+}

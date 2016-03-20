@@ -1,0 +1,19 @@
+{
+  "name": "goochcannon",
+  "version": "1.0.0",
+  "description": "play with your friends",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "onlinme"
+  ],
+  "author": "cameron chalmers",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.4",
+    "socket.io": "^1.4.5"
+  }
+}
