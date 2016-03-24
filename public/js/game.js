@@ -32,6 +32,15 @@ var localData = {
   }
 }
 
+var serverData = {
+  levelData: 0
+}
+
+var connected = false;
+
+//Temporary until we get the images
+var colourPallette = ["#000", "#00ff00", "#664400"];
+
 //##############################################//
 //          SERVER SECTION                      //
 //                                              //
@@ -42,17 +51,45 @@ var socket = io.connect("http://localhost:8000");
 
 socket.on('connect', function () {  
     console.log('Connected!');
-  });
+    socket.emit('logincheck', { userData: false });
+});
+
+socket.on('serverUpdate', function (data) {
+    serverData.levelData = data.levelData;
+    connected = true;
+});
+
+
+
+//##############################################//
+//          GAME FUNCTIONS                      //
+//                                              //
+//      © CAMERON CHALMERS, 2015                //
+//##############################################//
 
 function mainLoop() {
   clearScreen();
+  if (connected)
+    drawLevel();
   drawPlayers();
+  getPress();
+}
 
-  var keyboardMove = checkMove();
-  if ((keyboardMove[0] > 0) || (keyboardMove[1] > 0) || (keyboardMove[2] > 0) || (keyboardMove[3] > 0) || (keyboardMove[4] > 0) || (keyboardMove[5] > 0) || (keyboardMove[6] > 0) || (keyboardMove[7] > 0) || (keyboardMove[8] > 0) || (keyboardMove[9] > 0) || (keyboardMove[10] > 0) || (keyboardMove[11] > 0) || (keyboardMove[12] > 0))
+function drawLevel() {
+  var mapWidth = serverData.levelData.mapSize[0],
+      mapHeight = serverData.levelData.mapSize[1];
+  var currentDrawY = 750;
+  var currentDrawX = 0;
+  for (var i = serverData.levelData.map.length - 1; i >= 0; i--)
   {
-    var deltaTime = new Date().getTime();
-    socket.emit('keypress', { kp: keyboardMove, delta: deltaTime});
+    ctx.fillStyle = colourPallette[serverData.levelData.map[i]];
+    ctx.fillRect(currentDrawX, currentDrawY, 50, 50);
+    currentDrawX += 50;
+    if (i % mapWidth == 0)
+    {
+      currentDrawY -= 50;
+      currentDrawX = 0;
+    }
   }
 }
 
@@ -66,6 +103,10 @@ function drawPlayers() {
   ctx.fillRect(localData.player.xPos, localData.player.yPos - 100, 70, 100);
 }
 
+function getPress() {
+  if (Key.isDown(Key.RIGHT)) localData.player.xPos += 1;
+  if (Key.isDown(Key.LEFT)) localData.player.xPos -= 1;
+}
 
 
 //##############################################//
@@ -135,6 +176,7 @@ var recursiveAnim = function() {
     };
 //Start game
 animFrame(recursiveAnim);
+
 
 
 //Load images here
